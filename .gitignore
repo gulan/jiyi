@@ -1,0 +1,14 @@
+*.pyc
+.old
+*~
+*.db
+dist/
+build/
+2/
+my*
+*.gdg
+README.html
+design.html
+MANIFEST
+
+

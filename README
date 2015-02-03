@@ -1,0 +1,32 @@
+Goals
+-----
+Many flash card programs clutter the presentation with distracting
+information. But any kind of distraction impedes the learning to be
+done. Jiyi (pronounced gee-ee) will show you only the text of the card
+that you are learning.
+
+Model
+-----
+Jiyi follows a physical model of flash card play. Imagine that you are
+sitting at a table with a newly sorted deck of flash cards (called the
+draw deck). Each card has a question on the front, and the question
+and the answer on the back. The play proceeds as follows.
+
+1. You draw the top card from the draw deck, read the question, and
+   try to recall the answer.
+
+2. You flip the card over and compare your answer with the card's.
+
+3. If you think you know the card well enough, you toss it on the
+   discard pile. Cards in the discard pile will not be looked at again
+   during the course of the game.
+
+4. If you could not remember the answer quickly, put the card in the
+   review pile.
+
+5. After a time, up to you, you can restack the cards. This means that
+   you shuffle the cards in the review pile, and place them on top of the
+   draw deck. Play then resumes as before, but of course you will first
+   see the review cards before proceeding to any new ones.
+
+6. The game is over when all of the cards are in the discard pile.
