@@ -1,20 +1,22 @@
+#!/usr/bin/env python
 
-import deck
 import sys
 
 Q,A = 'q a'.split()
-START,SHOW,RESTACK,DISCARD,RETRY  = 'start show restack discard retry'.split()
+START,SHOW,RESTACK,DISCARD,RETRY,EXIT  = 'start show restack discard retry exit'.split()
 
-def machine(adaptor):
+def machine(adaptor,my_deck):
     while True:
         event = adaptor.receive_event()
-        print >>sys.stderr, "M> %s" % event
+        # print >>sys.stderr, "M> %s" % event
         
         # --- dispatch event and exit state ---
         if event == START:
-            d = deck.TestDeck()
+            d = my_deck()
             d.load()
             state = Q
+        elif event == EXIT: # only for unit testing
+            break
         elif state == Q and event == SHOW:
             state = A
         elif state == Q and event == RESTACK:

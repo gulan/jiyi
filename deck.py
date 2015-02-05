@@ -58,19 +58,3 @@ class TestDeck(Deck):
         b = repr(self._save)
         c = repr(self._trash)
         return '\n'.join([a,b,c])
-
-if __name__ == '__main__':
-    d = TestDeck()
-    d.load()
-    d.toss()
-    d.keep()
-    d.redo()
-    print d.more
-    d.keep()
-    print d.question
-    print d.answer
-    d.keep()
-    print d.more
-    print d
-    d.redo()
-    print d

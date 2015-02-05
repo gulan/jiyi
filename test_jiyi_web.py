@@ -44,6 +44,10 @@ This CSP decription will yield little addition insight until we can
 describe the internal states of the server.
 
 """
+
+# This is really just a system exerciser, rather than a test with
+# pass/fail results.
+
 import random
 import urllib
 

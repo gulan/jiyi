@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 from bottle import request,route,run,template,post,get
+import deck
 import machine
 import multiprocessing as mp
 import os
@@ -79,7 +80,7 @@ def play():
 
 if __name__ == '__main__':
     adaptor = web_adaptor()
-    sm = mp.Process(target=machine.machine,args=(adaptor,))
+    sm = mp.Process(target=machine.machine,args=(adaptor,deck.TestDeck))
     sm.start()
     run(host='0.0.0.0',port=8080,debug=True)
     sm.join()
