@@ -18,8 +18,8 @@ Q.
 
 """
 
-import machine
-from machine import (START, SHOW, RESTACK, DISCARD, RETRY, EXIT) # events
+from jiyi import machine
+from jiyi.machine import (START, SHOW, RESTACK, DISCARD, RETRY, EXIT) # events
 import re
 
 class TestDummy(object):
@@ -68,5 +68,5 @@ run([B,S,T,X])
 run([B,S,T,S,T,X])
 run([B,V,V,V,X])
 run([B,V,V,V,S,R,S,T,V,S,T,X])
-
+print 'ok'
 

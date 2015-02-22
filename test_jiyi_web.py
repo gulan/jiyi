@@ -51,7 +51,7 @@ describe the internal states of the server.
 import random
 import urllib
 
-URL = "http://0.0.0.0:8080/jiyi"
+URL = "http://0.0.0.0:8081/jiyi/chinese"
 
 def user_start():
     # establish initial Q state.

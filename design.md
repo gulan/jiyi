@@ -87,3 +87,95 @@ The operations are attached to the machine as follows.
 
 The machine operations occur upon leaving a state, where as the
 output functions (that create the HTML) occur on state entry.
+
+Refactor
+--------
+A real flash card game has a player and a deck of cards. The cards and
+the player interact according to the rules of the game.
+
+    player <-> card-deck
+
+In converting to a program, the human player becomes a web client
+process called "user", and the card deck becomes a data structure. We also
+introduce a state machine process to enforce the rules of the game.
+
+Version 0.1
+-----------
+
+    user <-> machine <-> deck
+
+The arrows show messages are passed between the processes. (The term
+message is abstract: it could be a token on a channel, or a procedure
+call.) The sequence diagrams are,
+
+    user->machine: Show
+    machine->machine: state A
+    machine->deck: answer?
+    deck->machine: answer!
+    machine->user: answer-html
+  
+    user->machine: Got It!
+    machine->deck: toss
+    note right of deck: moves card to trash
+    machine->machine: state Q
+    machine->deck: question?
+    deck->machine: question!
+    machine->user: question-html
+
+    user->machine: Try Again
+    machine->deck: save
+    note right of deck: moves card to retry
+    machine->machine: state Q
+    machine->deck: question?
+    deck->machine: question!
+    machine->user: question-html
+
+    user->machine: Review
+    note right of machine: remain is state Q
+    machine->deck: restack
+    note right of machine: put retry cards on top of draw deck
+    machine->deck: question?
+    deck->machine: question!
+    machine->user: question-html
+
+See www.websequencediagrams.com to render this notation.
+
+What if we change the representation of questions and answers? For
+example, a question might be a picture. Such a change should require
+no modifications to the machine, which just enforces the rules of the
+game. The machine should not know anything about presentation.
+
+My version 1 code has a adaptor class that does the presentation. It
+allows the machine to treat questions and answers as opaque data to be
+passed on. But really, the machine doesn't need this data at all.
+
+Version 0.2
+-----------
+         show                                 Ans
+    user ---> to_event ---> machine ---> deck ---> to_html ---> user
+
+        gotit                       toss      NewQ
+    user ---> to_event ---> machine ---> deck ---> to_html ---> user
+
+        retry                       keep      NewQ
+    user ---> to_event ---> machine ---> deck ---> to_html ---> user
+
+        review                     restack    NewQ
+    user ---> to_event ---> machine ---> deck ---> to_html ---> user
+
+This scheme conforms to the "Tell, don't ask." rule-of-thumb.
+
+The to_event() is little more than the identity function. It is there
+because it is symmetric with to_html().
+
+* What if we changed the user interface from http to tty? We would
+  expect machine and deck to remain unchanged.
+
+* What if we changed from html text to html image? We would expect
+  that machine is still unchanged. We might even expect deck to remain
+  the same if it was agnostic about the represenation of individual
+  cards.
+
+* What if we changed deck to manage the state of the deck with SQL
+  instead of Python lists? Nothing else should need to change.
+

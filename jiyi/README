@@ -1,0 +1,6 @@
+The basic API is described by deck.py, machine.py, etc at the top of
+the package tree. The packages are alternate implementations that are
+extensions, or maybe just different low-level design choices.
+
+For example, chinese-sql loads data from an sqlite3 data base, but
+otherwise manages the game state with python lists.

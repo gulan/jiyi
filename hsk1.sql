@@ -1,8 +1,8 @@
+-- not covered by gpl license of jiyi
 PRAGMA foreign_keys=OFF;
 BEGIN TRANSACTION;
 CREATE TABLE defn (did int primary key,chinese text,pid int references pinyin(pid),english text);
 INSERT INTO "defn" VALUES(1,'啊',1,'ah');
-INSERT INTO "defn" VALUES(2,'啊',2,'ah');
 INSERT INTO "defn" VALUES(3,'矮',3,'short; low');
 INSERT INTO "defn" VALUES(4,'爱',4,'love');
 INSERT INTO "defn" VALUES(5,'爱人',5,'husband; wife; sweetheart');

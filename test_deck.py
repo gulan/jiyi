@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 
-import deck
+from jiyi import deck
 import random
 import StringIO
 
