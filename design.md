@@ -179,3 +179,110 @@ because it is symmetric with to_html().
 * What if we changed deck to manage the state of the deck with SQL
   instead of Python lists? Nothing else should need to change.
 
+Version 0.3
+-----------
+As of version 0.2, jiyi is not conform to REST. The worst problem is
+that it keeps session state in a fsm on the back-end. The proper
+design would allow the client to make requests in any sequence by
+providing the server all needed context information for a game in
+progress.
+
+We need to understand the difference between session state and game
+state. First, we do require state. A game proceeds by moving cards
+around. The configuration of the cards is main part of the state, and
+the user requires that it reflect the game in progress. The user makes
+deliberate changes to the game state by issuing operations against it
+during the course of play.
+
+The client should not have any history of operations. It should have
+the parameters needed to make a limited set of requests, and nothing
+more. In general, if a client repeats a resquest, it will get the same
+response. We expect that a game in progress could be taken-up by a
+different client on another machine.
+
+To make all this work, the first step is to extend the data base to
+represent games in progress.
+
+Transactions
+~~~~~~~~~~~~
+
+new_play
+````````
+A play is a game in-progress or one that has been finished. The name
+'game' is reserved for a future extension that provides a selection of
+game sets.
+
+A new play is given a unique name. From this name, the exact state of
+play maybe determined.
+
+list_play
+`````````
+Shows the names that have already been used.
+
+show
+````
+Reveal the answer to the question
+
+toss
+````
+Discard the top card
+
+save
+````
+Put the top card in the review deck
+
+review
+``````
+Shuffle the review deck, and move it to the top of the draw deck.
+
+ask
+```
+Show the question from the top card. The user does not issue this
+query directly. it is always invoked after a save, toss or review.
+
+progress
+````````
+Show statistics for the game in progress. This feature requires
+counters for how many times a card has be asked and how many time it
+has been missed.
+
+dump
+````
+Allow the user to save the current state of the data base as
+sql. Loading a DB is a future extension.
+
+Chinese Schema
+--------------
+Our basic data is a set of triples: (chinese,pinyin,english). The
+english is the definion of the chinese word, which is given as both
+simplified chinese and pinyin.
+
+Since the number of Chinese characters is much greater than the pinyin
+pronoucation of those characters, the pinyin field above is actually a
+foreign key to another table.
+
+To track the state of play, each card needs a deck id :
+draw,review,discard. Of course the state of the card is only revelant
+to the play in progress.
+
+(play,deck,card)  
+
+But we also need to keep decks in order: they are lists not sets.
+
+(play,deck,sequence,card)
+
+Actually, we don't need the discards, and if we did, their sequence
+would not be important. Let's just kept draw and review
+decks. Actually, then sequence of cards in the keep deck is not
+important either. We are going to resequence them before restacking,
+so we should not both keeping track of the previous sequence. That
+thinking gives us two tables.
+
+    draw: (play,sequence,card)
+    keep: (play,card)
+
+new_play(name)
+    insert into keep select {name} rowid from defn;
+
+
+
