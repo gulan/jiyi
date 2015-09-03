@@ -3,7 +3,7 @@
 """
 The module machine.py implements a simple state machine. Like any FSM,
 it's behavoir can be equivalently described by a regular
-expression. It this case,
+expression. In this case,
 
     input = start ; (restack+ | play)*
      play = show ; (discard | retry)

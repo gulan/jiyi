@@ -3,7 +3,7 @@
 from bottle import (request,route,run,template,post,get)
 from jiyi.chinese_sql import deck
 from jiyi import machine
-from jiyi.adaptor import sql_adaptor
+from jiyi.chinese_sql.adaptor import sql_adaptor
 import multiprocessing as mp
 
 @get('/jiyi/chinese')

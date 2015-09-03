@@ -1,0 +1,21 @@
+Deploy
+-------
+
+Add Feature
+-----------
+
+Checkin
+-------
+python setup.py sdist
+cp dist/jiyi-0.4.0.tar.gz /tmp
+cd jiyi-0.4.0/
+rm -rf jiyi-0.4.0
+tar xvfz jiyi-0.4.0.tar.gz
+sqlite3 hsk1.db <jiyi/chinese_sql/hsk1.sql
+virtualenv 2
+. 2/bin/activate
+pip install bottle
+python setup.py install
+jiyi_web.py
+
+

@@ -1,4 +1,4 @@
-#! /usr/bin/env python2
+#! /usr/bin/env python
 
 """
 Our flashcard game has just two display states: display_question and
@@ -8,13 +8,13 @@ The initial state when a new game starts is Q. The transitions away
 from the Q state are 'restack' and 'show'. All the transitions occur
 because the user clicks a button.
 
-The show transition move to the A state where the page is updated to
+The show transition moves to the A state where the page is updated to
 show the answer.
 
 The restack transition cycles back to the Q state, but the question
 displayed will be different. Internally, the server puts the previouly
 missed cards (retry-deck) back on top of the deck, and the first of
-those is what is diplayed.
+those is what is displayed.
 
 Once in the Answer state, there are again two possible actions:
 discard and retry. These actions are how the user chooses their
