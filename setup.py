@@ -5,7 +5,7 @@ from distutils.core import setup
 # Manually: sqlite3 hsk1.db <jiyi/chinese_sql/hsk1.sql  
 
 setup(name='jiyi',
-      version='0.4.0',
+      version='0.5.0',
       description='Flash Card Game',
       author='gulan',
       author_email='glen.wilder@gmail.com',

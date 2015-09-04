@@ -2,6 +2,7 @@
 
 from jiyi import deck
 import random
+random.seed(23)
 import StringIO
 
 # Some quick sanity tests. I make a real test suite later.
@@ -10,7 +11,6 @@ def test1():
     "Some arbitrary sequence of actions is repeatable"
     result = "True\n2^X = 128\n2^7 = 128\nTrue\n[('pi', '3.14159')]\n[('2^6 = X', '2^6 = 64'), ('2^X = 128', '2^7 = 128')]\n[('7 * X = 56', '7 * 8 = 56')]\n[('2^X = 128', '2^7 = 128'), ('2^6 = X', '2^6 = 64'), ('pi', '3.14159')]\n[]\n[('7 * X = 56', '7 * 8 = 56')]\n"
     f = StringIO.StringIO()
-    random.seed(23)
     d = deck.TestDeck()
     d.load()
     d.toss()
@@ -29,7 +29,7 @@ def test1():
 
 def test2():
     "tossed cards are not seen again."
-    random.seed(23)
+    # random.seed(23)
     d = deck.TestDeck()
     d.load()
     while d.question:
@@ -39,7 +39,7 @@ def test2():
 
 def test3():
     "kept cards are not lost"
-    random.seed(23)
+    # random.seed(23)
     d = deck.TestDeck()
     d.load()
     c0 = 0

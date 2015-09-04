@@ -1,47 +1,74 @@
 #!/usr/bin/env python
 
 import random
-import sqlite3
 
 # TBD: Deck is biased to in-memory list.
 # TBD: Extend to manage persistent game state by game-id
 # TBD: select range
 # TBD: sql varient should be a separate package
 
+"""
+Properties
+----------
+Cards are immutable.
+Cards maybe be compared with ==.
+The union of deck, trash and saved is the same thoughout the game.
+"""
+
 class Deck(object):
-    """ Operations on our card decks"""
+    """Operations on our card decks"""
+
     def toss(self):
+        """Remove the card from the game. This operation is also known
+        as discard. For testing only, the removed cards are kept in
+        _trash."""
         if self._deck:
             top,self._deck = self._deck[0],self._deck[1:]
             self._trash.append(top)
     
     def keep(self):
+        """Save the card to the retry deck. The user may put these
+        cards back into play with the redo()."""
         if self._deck:
             top,self._deck = self._deck[0],self._deck[1:]
             self._save.append(top)
         
     def redo(self):
+        """Shuffle and stack any saved cards on top of the play deck."""
         random.shuffle(self._save)
         self._deck = self._save + self._deck
         self._save = []
+        
+    @property
+    def saved(self):
+        return self._save
+
+    @property
+    def trashed(self):
+        return self._trash
+
+    @property
+    def deck(self):
+        return self._deck
     
     @property
     def more(self):
-        return len(self._deck) > 0
+        return len(self.deck) > 0
         
     @property
     def game(self):
-        return len(self._deck) == 0 and len(self._save) == 0
+        # True if game is over
+        return len(self.deck) == 0 and len(self.saved) == 0
     
     @property
     def question(self):
         if self.more:
-            return self._deck[0][0]
+            return self.deck[0][0]
     
     @property
     def answer(self):
         if self.more:
-            return self._deck[0][1]
+            return self.deck[0][1]
         
     def __init__(self):
         self._deck = []
@@ -61,7 +88,7 @@ class TestDeck(Deck):
         self.redo()
 
     def __repr__(self):
-        a = repr(self._deck)
-        b = repr(self._save)
-        c = repr(self._trash)
+        a = repr(self.deck)
+        b = repr(self.saved)
+        c = repr(self.trashed)
         return '\n'.join([a,b,c])

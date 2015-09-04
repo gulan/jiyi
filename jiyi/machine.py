@@ -6,12 +6,12 @@ Q,A = 'q a'.split()
 START,SHOW,RESTACK,DISCARD,RETRY,EXIT  = 'start show restack discard retry exit'.split()
 
 def machine(adaptor,my_deck):
+
     while True:
         event = adaptor.receive_event()
-        # print >>sys.stderr, "M> %s" % event
         
-        # --- dispatch event and exit state ---
-        if event == START:
+        # --- Dispatch event and exit current state ---
+        if event == START:  # TBD: do outside
             d = my_deck()
             d.load()
             state = Q
@@ -31,7 +31,7 @@ def machine(adaptor,my_deck):
         else:
             raise Exception, "state=%s event=%s" % (state,event)
         
-        # --- enter new state ---
+        # --- Enter new state ---
         if state == A:
             adaptor.send_answer(d.question,d.answer)
         else:

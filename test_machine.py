@@ -21,6 +21,7 @@ Q.
 from jiyi import machine
 from jiyi.machine import (START, SHOW, RESTACK, DISCARD, RETRY, EXIT) # events
 import re
+import sys
 
 class TestDummy(object):
     'Placeholder deck operations for testing state machine'
@@ -43,7 +44,6 @@ class adaptor(object):
         try:
             return self.event_list.next()
         except StopIteration:
-            import sys
             sys.exit()
     def send_question(self,question): self.output.append('Q')
     def send_answer(self,question,answer): self.output.append('A')
@@ -53,8 +53,6 @@ class adaptor(object):
         self.event_list = iter(event_list)
         self.output = []
 
-B,S,V,T,R,X = START, SHOW, RESTACK, DISCARD, RETRY, EXIT
-
 def run(events):
     a = adaptor(events)
     machine.machine(a,TestDummy)
@@ -62,11 +60,13 @@ def run(events):
     m1 = re.match(r'^Q+(AQ+)*A?$',rpt)
     assert m1, (events,rpt)
 
-run([B,X])
-run([B,S,X])
-run([B,S,T,X])
-run([B,S,T,S,T,X])
-run([B,V,V,V,X])
-run([B,V,V,V,S,R,S,T,V,S,T,X])
-print 'ok'
+if __name__ == '__main__':
+    B,S,V,T,R,X = START, SHOW, RESTACK, DISCARD, RETRY, EXIT
+    run([B,X])
+    run([B,S,X])
+    run([B,S,T,X])
+    run([B,S,T,S,T,X])
+    run([B,V,V,V,X])
+    run([B,V,V,V,S,R,S,T,V,S,T,X])
+    print 'ok'
 

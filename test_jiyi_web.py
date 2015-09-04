@@ -40,7 +40,7 @@ retry.
    Server = ...
    Game = User || Server
 
-This CSP decription will yield little addition insight until we can
+This CSP decription will yield little additional insight until we can
 describe the internal states of the server.
 
 """
@@ -55,27 +55,17 @@ URL = "http://0.0.0.0:8081/jiyi/chinese"
 
 def user_start():
     # establish initial Q state.
-    html = urllib.urlopen(URL).read().decode("utf-8")
-    return html
+    return urllib.urlopen(URL).read().decode("utf-8")
 
 def user_PUSH(query_args):
     encoded_args = urllib.urlencode(query_args)
     a = urllib.urlopen(URL,encoded_args) # PUSH encoded form
-    html = a.read().decode("utf-8")
-    return html
+    return a.read().decode("utf-8")
 
-def user_show():
-    query_args = {'show':'Show'} # click submit button "show"
-    return user_PUSH(query_args)
-
-def user_restack():
-    return user_PUSH({'restack':'Review'})
-
-def user_discard():
-    return user_PUSH({'discard':'Got It!'})
-
-def user_retry():
-    return user_PUSH({'retry':'Try Again'})
+def user_show(): return user_PUSH({'show':'Show'}) # click button "Show"
+def user_restack(): return user_PUSH({'restack':'Review'})
+def user_discard(): return user_PUSH({'discard':'Got It!'})
+def user_retry(): return user_PUSH({'retry':'Try Again'})
 
 def read_html(html):
     "determine the state from the displayed html"
@@ -85,29 +75,16 @@ def read_html(html):
     elif 'discard' in html:
         return 'A'
     else:
-        return '?'
+        raise Exception, "Cannot recognize html"
 
-def test_user():
-    
-    def Q_action():
-        if random.choice([False,True]):
-            return user_show()
-        else:
-            return user_restack()
-        
-    def A_action():
-        if random.choice([False,True]):
-            return user_discard()
-        else:
-            return user_retry()
-        
+def test_user(N=5):
     html = user_start()
-    for _ in range(5):
+    for _ in range(N):
         state = read_html(html)
         if state == 'Q':
-            html = Q_action()
+            html = random.choice([user_show,user_restack])()
         elif state == 'A':
-            html = A_action()
+            html = random.choice([user_discard,user_retry])()
 
 if __name__ == '__main__':
     test_user()
